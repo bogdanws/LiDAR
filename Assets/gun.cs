@@ -9,8 +9,6 @@ public class gun : MonoBehaviour
 	[SerializeField]
 	private float spread = 0.1f;
 	[SerializeField]
-	private InputActionAsset inputActions;
-	[SerializeField]
 	private Transform raycastStart;
 	[SerializeField]
 	private Transform raycastHorizontal;
@@ -79,7 +77,7 @@ public class gun : MonoBehaviour
 	private IEnumerator horizontalScan()
 	{
 		horizontalScanner = true;
-		inputActions.Disable();
+		//inputActions.Disable();
 
 		for (int i = -15; i <= 15; i++)
 		{
@@ -94,7 +92,7 @@ public class gun : MonoBehaviour
 		}
 
 		horizontalScanner = false;
-		inputActions.Enable();
+		//inputActions.Enable();
 	}
 
 	private GameObject doRayCast(Vector3 direction)
