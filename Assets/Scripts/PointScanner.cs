@@ -104,7 +104,7 @@ public class PointScanner : MonoBehaviour
 
 			yield return new WaitForSeconds(0.04f);
 		}
-
+		
 		horizontalScanner = false;
 		inputActions.Enable();
 	}
@@ -118,7 +118,7 @@ public class PointScanner : MonoBehaviour
 		if (Physics.Raycast(raycastStart.position, direction, out RaycastHit hit, 50f, mask))
 		{
 
-			//if (Physics.OverlapSphereNonAlloc(hit.point, 0.02f, new Collider[4], pointsMask) >= 4) { return point; }
+			if (Physics.OverlapSphereNonAlloc(hit.point, 0.011f, new Collider[8], pointsMask) >= 8) { return point; }
 
 			if (hit.collider.tag == "World") // if hit world object (exclude normal entities and stuff)
 			{
