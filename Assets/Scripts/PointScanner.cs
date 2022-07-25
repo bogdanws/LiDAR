@@ -21,8 +21,10 @@ public class PointScanner : MonoBehaviour
 	/*[SerializeField]
 	private TrailRenderer scanTrail;*/
 	[SerializeField]
-	[Tooltip("Delay during circle scan.")]
+	[Tooltip("Scan delay.")]
 	private float scanDelay = 0.005f;
+	[Tooltip("Cooldown for sphere scan.")]
+	private float sphereDelay = 1f;
 	[SerializeField]
 	[Tooltip("What layers the raycast collides with.")]
 	private LayerMask mask;
@@ -41,10 +43,13 @@ public class PointScanner : MonoBehaviour
 
 	private float lastScanTime = 0f;
 	private bool horizontalScanner = false;
+	private float lastSphereScanTime = 0f;
 
-	[SerializeField]
-	[Tooltip("Maximum points after which old ones start getting deleted")]
-	public int maxPoints = 5000;
+	private List<Vector3> tr = new List<Vector3>();
+	private List<Color> cl = new List<Color>();
+
+	// Maximum points after which old ones start getting deleted
+	public static int maxPoints = 20000;
 	Queue<GameObject> points = new Queue<GameObject>(); // queue that stores all the points
 
 	private void Start()
@@ -86,6 +91,16 @@ public class PointScanner : MonoBehaviour
 				doRayCast(GetCircularDirection());
 			}
 		}
+
+		if (Input.GetMouseButton(2) && !horizontalScanner) // if currently holding middle button
+		{
+			// check if delay passed
+			if (lastSphereScanTime + sphereDelay < Time.time)
+			{
+				StartCoroutine(sphereScan());
+			}
+		}
+
 	}
 
 	private IEnumerator horizontalScan()
@@ -109,6 +124,30 @@ public class PointScanner : MonoBehaviour
 		inputActions.Enable();
 	}
 
+	private IEnumerator sphereScan()
+	{
+		lastSphereScanTime = Time.time;
+
+		for (int i = -85; i <= 85; i += 2)
+		{
+			if (i < -25 || i > 25 && i <= 82)
+			{
+				i += 3;
+			} else if (i < -20 || i > 20)
+			{
+				i += 1;
+			}
+			for (int j = -180; j <= 179; j += 5)
+			{
+				// Rotate raycastHorizontal object along lines
+				raycastHorizontal.transform.eulerAngles = new Vector3(i, j, 0);
+				doRayCast(raycastHorizontal.transform.forward);
+			}
+		}
+
+		yield return null;
+	}
+
 	private GameObject doRayCast(Vector3 direction)
 	{
 		GameObject point = null;
@@ -117,20 +156,22 @@ public class PointScanner : MonoBehaviour
 		// start raycast
 		if (Physics.Raycast(raycastStart.position, direction, out RaycastHit hit, 50f, mask))
 		{
-
 			if (Physics.OverlapSphereNonAlloc(hit.point, 0.011f, new Collider[8], pointsMask) >= 8) { return point; }
 
-			if (hit.collider.tag == "World") // if hit world object (exclude normal entities and stuff)
+			switch (hit.collider.tag)
 			{
-				point = Instantiate(hitPoint, hit.point, Quaternion.LookRotation(hit.normal)); // instantiate object
-				point.transform.parent = hitParent.transform; // set parent to hitParent
-			}
-			else if (hit.collider.tag == "Enemy") // if hit enemy
-			{
-				point = Instantiate(hitPoint, hit.point, Quaternion.LookRotation(hit.normal)); // instantiate object
-				point.transform.parent = hitParent.transform; // set parent to hitParent
-				point.GetComponent<Renderer>().material = redMat;
-				point.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+				// if hit world object (exclude normal entities and stuff)
+				case "World":
+					point = Instantiate(hitPoint, hit.point, Quaternion.LookRotation(hit.normal)); // instantiate object
+					point.transform.parent = hitParent.transform; // set parent to hitParent
+					break;
+				// if hit enemy
+				case "Enemy":
+					point = Instantiate(hitPoint, hit.point, Quaternion.LookRotation(hit.normal)); // instantiate object
+					point.transform.parent = hitParent.transform; // set parent to hitParent
+					point.GetComponent<Renderer>().material = redMat;
+					point.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+					break;
 			}
 		}
 
