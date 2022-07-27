@@ -34,6 +34,9 @@ public class TriangleMeshRenderer : MonoBehaviour
 
 	public void AddTriangle(Vector3 pos, Quaternion rotation)
 	{
+		if (CheckOverlap(pos)) {return;}
+		rotation.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y, Random.Range(-180f, 180f));
+
 		vertices[index + 0] = (rotation * (new Vector3(0, -vertexOffset * triangleSize, 0)) + pos);
 		vertices[index + 1] = (rotation * (new Vector3(-vertexOffset * triangleSize, vertexOffset * triangleSize, 0)) + pos);
 		vertices[index + 2] = (rotation * (new Vector3(vertexOffset * triangleSize, vertexOffset * triangleSize, 0)) + pos);
@@ -44,5 +47,18 @@ public class TriangleMeshRenderer : MonoBehaviour
 
 		index += 3;
 		UpdateMesh();
+	}
+
+	private bool CheckOverlap(Vector3 pos)
+	{
+		for (int i = 0; i < index; i += 3)
+		{
+			Vector3 otherPos = vertices[i];
+			if (MathF.Abs(otherPos.x - pos.x) < 0.1f && MathF.Abs(otherPos.y - pos.y) < 0.1f && MathF.Abs(otherPos.z - pos.z) < 0.1f)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
