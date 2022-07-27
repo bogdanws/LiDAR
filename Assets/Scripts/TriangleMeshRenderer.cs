@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TriangleMeshRenderer : MonoBehaviour
 {
 	private Mesh mesh;
-	/*List<Vector3> vertices = new List<Vector3>();
-	List<int> triangles = new List<int>();*/
-	Vector3[] vertices = new Vector3[65535];
-	private int[] triangles = new int[65535];
+	Vector3[] vertices = new Vector3[399999];
+	private int[] triangles = new int[399999]; // allows up to 130k triangles
 
 	//private int scansCount = 0;
 	private int index = 0;
@@ -22,6 +22,7 @@ public class TriangleMeshRenderer : MonoBehaviour
 	private void Start()
 	{
 		mesh = GetComponent<MeshFilter>().mesh;
+		mesh.indexFormat = IndexFormat.UInt32; // placeholder until chunks are implemented
 		UpdateMesh();
 	}
 
