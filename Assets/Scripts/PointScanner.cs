@@ -67,21 +67,19 @@ public class PointScanner : MonoBehaviour
 		horizontalScanner = true;
 		inputActions.Disable();
 
-		Transform raycastStartTransform = raycastStartPos.transform;
-
 		for (int i = -15; i <= 15; i++)
 		{
 			for (int j = -20; j <= 20; j++)
 			{
-				// Rotate raycastPointer object along lines
-				Vector3 eulerAngles = raycastStartTransform.eulerAngles;
-				raycastPointer.transform.eulerAngles = new Vector3(i + eulerAngles.x, j + eulerAngles.y, eulerAngles.z);
-				doRayCast(raycastStartTransform.forward);
+
+				// Rotate raycastHorizontal object along lines
+				raycastPointer.transform.eulerAngles = new Vector3(i + raycastStartPos.transform.eulerAngles.x, j + raycastStartPos.transform.eulerAngles.y, raycastStartPos.transform.eulerAngles.z);
+				doRayCast(raycastPointer.transform.forward);
 			}
 
 			yield return new WaitForSeconds(0.04f);
 		}
-		
+
 		horizontalScanner = false;
 		inputActions.Enable();
 	}
