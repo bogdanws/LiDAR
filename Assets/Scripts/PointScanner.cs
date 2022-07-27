@@ -29,8 +29,8 @@ public class PointScanner : MonoBehaviour
 	[Tooltip("TriangleMeshRenderer component on a GameObject used to render the triangles")]
 	private TriangleMeshRenderer trRenderer;
 
-	private float lastScanTime = 0f;
-	private bool horizontalScanner = false;
+	private float _lastScanTime = 0f;
+	private bool _horizontalScanner = false;
 
 	
 
@@ -42,29 +42,29 @@ public class PointScanner : MonoBehaviour
 			spread = Mathf.Clamp(spread + mouseScroll / 2, 0.05f, 0.5f);
 		}
 
-		if (Input.GetMouseButtonDown(1) && !horizontalScanner) // if currently holding secondary button
+		if (Input.GetMouseButtonDown(1) && !_horizontalScanner) // if currently holding secondary button
 		{
 			// check if delay passed
-			if (lastScanTime + scanDelay < Time.time)
+			if (_lastScanTime + scanDelay < Time.time)
 			{
-				StartCoroutine(horizontalScan());
+				StartCoroutine(HorizontalScan());
 			}
 		}
 
 
-		if (Input.GetMouseButton(0) && !horizontalScanner) // if currently holding shoot button
+		if (Input.GetMouseButton(0) && !_horizontalScanner) // if currently holding shoot button
 		{
 			// check if delay passed
-			if (lastScanTime + scanDelay < Time.time)
+			if (_lastScanTime + scanDelay < Time.time)
 			{
-				doRayCast(GetCircularDirection());
+				DoRayCast(GetCircularDirection());
 			}
 		}
 	}
 
-	private IEnumerator horizontalScan()
+	private IEnumerator HorizontalScan()
 	{
-		horizontalScanner = true;
+		_horizontalScanner = true;
 		inputActions.Disable();
 
 		for (int i = -15; i <= 15; i++)
@@ -74,19 +74,19 @@ public class PointScanner : MonoBehaviour
 
 				// Rotate raycastHorizontal object along lines
 				raycastPointer.transform.eulerAngles = new Vector3(i + raycastStartPos.transform.eulerAngles.x, j + raycastStartPos.transform.eulerAngles.y, raycastStartPos.transform.eulerAngles.z);
-				doRayCast(raycastPointer.transform.forward);
+				DoRayCast(raycastPointer.transform.forward);
 			}
 
 			yield return new WaitForSeconds(0.04f);
 		}
 
-		horizontalScanner = false;
+		_horizontalScanner = false;
 		inputActions.Enable();
 	}
 
-	private void doRayCast(Vector3 direction)
+	private void DoRayCast(Vector3 direction)
 	{
-		lastScanTime = Time.time; // update delay time
+		_lastScanTime = Time.time; // update delay time
 
 		// start raycast
 		if (Physics.Raycast(raycastStartPos.position, direction, out RaycastHit hit, 50f, mask))
@@ -97,13 +97,13 @@ public class PointScanner : MonoBehaviour
 			{
 				// if hit world object (exclude normal entities and stuff)
 				case "World":
-					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal));
+					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 255, 255, 255));
 					break;
 				// if hit enemy
 				case "Enemy":
 					/*point.GetComponent<Renderer>().material = redMat;
 					point.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);*/
-					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal));
+					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 0, 0, 255));
 					break;
 			}
 		}
