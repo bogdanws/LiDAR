@@ -28,8 +28,8 @@ public class PointScanner : MonoBehaviour
 	[Tooltip("What layers the raycast collides with.")]
 	private LayerMask mask;
 	[SerializeField]
-	[Tooltip("TriangleMeshRenderer component on a GameObject used to render the triangles")]
-	private TriangleMeshRenderer trRenderer;
+	[Tooltip("ChunkRenderer used to render the triangle on the corresponding mesh")]
+	private ChunkManager chunkManager;
 
 	private float _lastScanTime = 0f;
 	private bool _horizontalScanner = false;
@@ -47,7 +47,7 @@ public class PointScanner : MonoBehaviour
 		if (Input.GetMouseButtonDown(1) && !_horizontalScanner) // if currently holding secondary button
 		{
 			// check if delay passed
-			if (_lastScanTime + scanDelay < Time.time)
+			//if (_lastScanTime + scanDelay < Time.time)
 			{
 				StartCoroutine(HorizontalScan());
 			}
@@ -67,23 +67,22 @@ public class PointScanner : MonoBehaviour
 	private IEnumerator HorizontalScan()
 	{
 		_horizontalScanner = true;
-		inputActions.Disable();
+		//inputActions.Disable();
 
 		for (int i = -15; i <= 15; i++)
 		{
 			for (int j = -20; j <= 20; j++)
 			{
-
 				// Rotate raycastHorizontal object along lines
 				raycastPointer.transform.eulerAngles = new Vector3(i + raycastStartPos.transform.eulerAngles.x + Random.Range(-1.5f, 1.5f), j + raycastStartPos.transform.eulerAngles.y + Random.Range(-1.5f, 1.5f), raycastStartPos.transform.eulerAngles.z);
 				DoRayCast(raycastPointer.transform.forward);
 			}
 
-			yield return new WaitForSeconds(0.04f);
+			yield return new WaitForSeconds(0.004f);
 		}
 
 		_horizontalScanner = false;
-		inputActions.Enable();
+		//inputActions.Enable();
 	}
 
 	private void DoRayCast(Vector3 direction)
@@ -99,13 +98,11 @@ public class PointScanner : MonoBehaviour
 			{
 				// if hit world object (exclude normal entities and stuff)
 				case "World":
-					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 255, 255, 255));
+					chunkManager.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 255, 255, 255));
 					break;
 				// if hit enemy
 				case "Enemy":
-					/*point.GetComponent<Renderer>().material = redMat;
-					point.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);*/
-					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 0, 0, 255), 2.5f);
+					chunkManager.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 0, 0, 255), 2.5f);
 					break;
 			}
 		}

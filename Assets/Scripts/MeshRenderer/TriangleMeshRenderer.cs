@@ -9,19 +9,29 @@ using Random = UnityEngine.Random;
 public class TriangleMeshRenderer : MonoBehaviour
 {
 	private Mesh _mesh;
-	private readonly Vector3[] _vertices = new Vector3[65535];
-	private readonly int[] _triangles = new int[65535]; // allows up to 21845 triangles
-	private readonly Color32[] _colors = new Color32[65535];
+	private Vector3[] _vertices;
+	private int[] _triangles;
+	private Color32[] _colors;
 
 	//private int scansCount = 0;
-	private int _index = 0;
-	private float triangleSize = 0.02f;
+	private int _index;
+	private static readonly float triangleSize = 0.02f;
+	private static readonly int maxTriangles = 21845; // allows up to 21845 triangles
+	private static readonly int maxIndex = 3 * maxTriangles;
+
+	private bool containsGeometry = false;
 
 	private void Start()
 	{
+		_vertices = new Vector3[maxTriangles * 3];
+		_triangles = new int[maxTriangles * 3];
+		_colors = new Color32[maxTriangles * 3];
+		_index = 0;
+
 		_mesh = GetComponent<MeshFilter>().mesh;
-		//mesh.indexFormat = IndexFormat.UInt32; // placeholder until chunks are implemented
 		UpdateMesh();
+		containsGeometry = false;
+		this.gameObject.SetActive(false);
 	}
 
 	private void UpdateMesh()
@@ -35,6 +45,15 @@ public class TriangleMeshRenderer : MonoBehaviour
 	public void AddTriangle(Vector3 pos, Quaternion rotation, Color32 color, float size = 1)
 	{
 		//if (CheckOverlap(pos)) {return;}
+		if (_index >= maxIndex)
+		{ _index = 0;}
+
+		if (!containsGeometry)
+		{
+			containsGeometry = true;
+			this.gameObject.SetActive(true);
+		}
+
 		rotation.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y, Random.Range(-180f, 180f));
 		size *= triangleSize;
 
