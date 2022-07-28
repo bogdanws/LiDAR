@@ -15,10 +15,7 @@ public class TriangleMeshRenderer : MonoBehaviour
 
 	//private int scansCount = 0;
 	private int _index = 0;
-	private float _vertexOffset = 0.5f;
-
-	[SerializeField]
-	private float triangleSize = 0.1f;
+	private float triangleSize = 0.02f;
 
 	private void Start()
 	{
@@ -35,14 +32,15 @@ public class TriangleMeshRenderer : MonoBehaviour
 		_mesh.colors32 = _colors;
 	}
 
-	public void AddTriangle(Vector3 pos, Quaternion rotation, Color32 color)
+	public void AddTriangle(Vector3 pos, Quaternion rotation, Color32 color, float size = 1)
 	{
 		//if (CheckOverlap(pos)) {return;}
 		rotation.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y, Random.Range(-180f, 180f));
+		size *= triangleSize;
 
-		_vertices[_index + 0] = (rotation * (new Vector3(0, -_vertexOffset * triangleSize, 0)) + pos);
-		_vertices[_index + 1] = (rotation * (new Vector3(-_vertexOffset * triangleSize, _vertexOffset * triangleSize, 0)) + pos);
-		_vertices[_index + 2] = (rotation * (new Vector3(_vertexOffset * triangleSize, _vertexOffset * triangleSize, 0)) + pos);
+		_vertices[_index + 0] = (rotation * (new Vector3(0, -size, 0)) + pos);
+		_vertices[_index + 1] = (rotation * (new Vector3(-size, size, 0)) + pos);
+		_vertices[_index + 2] = (rotation * (new Vector3(size, size, 0)) + pos);
 
 		_triangles[_index + 0] = (_index + 0);
 		_triangles[_index + 1] = (_index + 2);

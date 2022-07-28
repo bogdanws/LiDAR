@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class PointScanner : MonoBehaviour
 {
@@ -73,7 +75,7 @@ public class PointScanner : MonoBehaviour
 			{
 
 				// Rotate raycastHorizontal object along lines
-				raycastPointer.transform.eulerAngles = new Vector3(i + raycastStartPos.transform.eulerAngles.x, j + raycastStartPos.transform.eulerAngles.y, raycastStartPos.transform.eulerAngles.z);
+				raycastPointer.transform.eulerAngles = new Vector3(i + raycastStartPos.transform.eulerAngles.x + Random.Range(-1.5f, 1.5f), j + raycastStartPos.transform.eulerAngles.y + Random.Range(-1.5f, 1.5f), raycastStartPos.transform.eulerAngles.z);
 				DoRayCast(raycastPointer.transform.forward);
 			}
 
@@ -103,7 +105,7 @@ public class PointScanner : MonoBehaviour
 				case "Enemy":
 					/*point.GetComponent<Renderer>().material = redMat;
 					point.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);*/
-					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 0, 0, 255));
+					trRenderer.AddTriangle(hit.point, Quaternion.LookRotation(hit.normal), new Color32(255, 0, 0, 255), 2.5f);
 					break;
 			}
 		}

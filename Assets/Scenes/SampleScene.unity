@@ -266,7 +266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc8545026283ca40b0e5c5b0fe3bf38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangleSize: 0.1
 --- !u!23 &70327317
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1143,19 +1142,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.960723
+      value: 0.9961947
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.2775092
+      value: -0.08715578
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1163,7 +1162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3484128893829305381, guid: 5b0d17b9e3e9ee24a811a0199fd319b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
