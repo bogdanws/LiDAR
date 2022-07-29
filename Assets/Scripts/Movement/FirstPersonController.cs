@@ -74,6 +74,10 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 
+		// CUSTOM VARIABLES
+		public static float scanMouseSpeed = 1f;
+		public static float scanMoveSpeed = 1f;
+
 		private bool IsCurrentDeviceMouse
 		{
 			get
@@ -136,7 +140,8 @@ namespace StarterAssets
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-				
+				deltaTimeMultiplier *= scanMouseSpeed;
+
 				_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
 				_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
 
@@ -147,7 +152,7 @@ namespace StarterAssets
 				CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
 
 				// rotate the player left and right
-				transform.Rotate(Vector3.up * _rotationVelocity);
+				transform.Rotate(Vector3.up * (_rotationVelocity));
 			}
 		}
 
@@ -155,6 +160,7 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			targetSpeed *= scanMoveSpeed;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 

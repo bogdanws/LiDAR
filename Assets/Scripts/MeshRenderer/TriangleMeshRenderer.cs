@@ -16,7 +16,7 @@ public class TriangleMeshRenderer : MonoBehaviour
 	//private int scansCount = 0;
 	private int _index;
 	private static readonly float triangleSize = 0.02f;
-	private static readonly int maxTriangles = 21845; // allows up to 21845 triangles
+	private static readonly int maxTriangles = 11845; // allows up to 21845 triangles
 	private static readonly int maxIndex = 3 * maxTriangles;
 
 	private bool containsGeometry = false;
