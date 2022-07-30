@@ -16,12 +16,13 @@ public class ReloadCloseOnKey : MonoBehaviour
     {
 	    if (curKeyboard.escapeKey.isPressed)
 	    {
-#if !UNITY_WEBGL
+#if UNITY_WEBGL
+			Screen.fullScreen = !Screen.fullScreen;
+#else
 		    Application.Quit();
 #endif
-		    Screen.fullScreen = !Screen.fullScreen;
-	    }
-	    if (curKeyboard.rKey.isPressed)
+		}
+		if (curKeyboard.rKey.isPressed)
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}

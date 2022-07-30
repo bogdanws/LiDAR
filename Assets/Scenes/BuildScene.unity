@@ -2456,6 +2456,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 466816422}
     - target: {fileID: 502585599326328761, guid: 8c0d33bed311e3044ac2d6b004ebb805, type: 3}
+      propertyPath: postProcess
+      value: 
+      objectReference: {fileID: 466816422}
+    - target: {fileID: 502585599326328761, guid: 8c0d33bed311e3044ac2d6b004ebb805, type: 3}
       propertyPath: chunkManager
       value: 
       objectReference: {fileID: 1970682408}
@@ -2471,6 +2475,14 @@ PrefabInstance:
       propertyPath: globalAudioSource
       value: 
       objectReference: {fileID: 1509137541}
+    - target: {fileID: 8173211785867665913, guid: 8c0d33bed311e3044ac2d6b004ebb805, type: 3}
+      propertyPath: TopClamp
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173211785867665913, guid: 8c0d33bed311e3044ac2d6b004ebb805, type: 3}
+      propertyPath: BottomClamp
+      value: -60
+      objectReference: {fileID: 0}
     - target: {fileID: 8173211785867665918, guid: 8c0d33bed311e3044ac2d6b004ebb805, type: 3}
       propertyPath: m_Name
       value: Player
